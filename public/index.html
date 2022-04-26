@@ -1,0 +1,341 @@
+<html>
+	<head>
+		<title> Der Lebenszyklus von Sternen - Berechungen </title>
+		<meta charset="utf-8"/>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
+		<style>
+			body{
+				font-family: "Roboto";
+				background-color: white;
+			}
+			input[type=submit]{
+				padding: 5px 10px 5px 10px;
+				background-color: white;
+				border: 2px solid #3C74BD;
+				border-radius: 5px;
+				color: #3C74BD;
+				font-size: 18px;
+				margin-top: 20px;
+				transition: .3s;
+			}
+			input[type=submit]:hover{
+				background-color: #3C74BD;
+				color: white;
+			}
+			h2{
+				color: #565b61;
+			}
+			h3{
+				color: #3C74BD;
+			}
+			input[type=number], select{
+				padding: 5px 10px 5px 10px;
+				border-radius: 5px;
+				border: 1px solid #323232;
+				font-family: "Roboto";
+			}
+			#content{
+				margin: 40px 15vw 0 15vw;
+			}
+			.line{
+				width: 500px;
+				height: 1px;
+				box-shadow: 2px 2px 4px #323232;
+				background-color: #323232;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="content">
+			<form method="POST" action="index.php">
+				<h1>Der Lebenszyklus von Sternen</h1>
+				<h2>Berechnungen und Erklärungen</h2>
+				<br>
+				<div class="line"></div>
+				<h3>Voraussetzungen der Sternenentstehung</h3>
+
+				<h4>Jeans-Masse</h4>
+
+				<label for="rho">Dichte der Molukülwolke (bspw.: 1e-20)</label><br>
+				<input id="rho" type="number" step="any" name="rho">
+				<br><br>
+
+				<label for="T">Temperatur der Molukülwolke [K]</label><br>
+				<input id="T" type="number" step="any" name="T" value="">
+				<br>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty()'/></p>
+				<br> 
+			</form>
+			<div class="line"></div>
+			<form method="POST" action="index.php">
+				<h3>Sternenentstehung: Protostellare Phase</h3>
+
+				<h4>Freifallzeit (dynamischer Kollaps)</h4>
+
+				<label for="rho2">konstante Dichte der Molukülwolke nach der Kontraktion (bspw.: 1e-12)</label><br> <!--domnik fragen wegen dichte-->
+				<input id="rho2" type="number" step="any" name="rho2" value="">
+				<br>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty2()'/></p>
+				<br>
+			</form>
+			<form  method="POST" action="index.php">
+				<h4>Massezuwachsrate, Leuchtkraft, Akkretionsgeschwindigkeit und die Effektive Temperatur</h4>
+
+				<label for="Ms">Masse des Protosterns [kg]</label><br>
+				<input id="Ms" type="number" step="any" name="Ms" value="">
+				<br><br>
+
+				<label for="Rs">Radius des Protosterns [m]</label><br>
+				<input id="Rs" type="number" step="any" name="Rs" value="">
+				<br><br>
+
+				<label for="Ts">Temperatur des Protosterns [K]</label><br>
+				<input id="Ts" type="number" step="any" name="Ts" value="">
+				<br>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty3()'/></p>
+				<br>
+			</form>
+			<div class="line"></div>
+			<form  method="POST" action="index.php">
+				<h3>Sternenentstehung: Vor-Hauptreihestern - Entwicklung zum HR-Stern</h3>
+				<h4>Kelvin-Helmholtz-Zeit</h4>
+
+				<label for="Mp2">Masse des Protosterns [kg]</label><br>
+				<input id="Mp2" type="number" step="any" name="Mp2" value="">
+				<br><br>
+
+				<label for="Rp2">Radius des Protosterns [m]</label><br>
+				<input id="Rp2" type="number" step="any" name="Rp2" value="">
+				<br><br>
+
+				<label for="Lp">Leuchtkraft des Protosterns [W]</label><br>
+				<input id="Lp" type="number" step="any" name="Lp" value="">
+				<br>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty7()'/></p>
+				<br>
+			</form>
+			<div class="line"></div>
+			<form  method="POST" action="index.php">
+				<h3>Sternenentwicklung auf und nach der Hauptreihe (HR)</h3>
+				<h4>Beziehungen und Verweildauer auf der Hauptreihe</h4>
+
+				<label for="ph-gr">physikalische Groesse: </label><br>
+				<select name="ph-gr" id="phy_gro">
+					<option value="p1" selected="selected">Masse</option>
+					<option value="p2">Leuchtkraft</option>
+					<option value="p3">Radius</option>
+					<option value="p4">Oberflächentemperatur</option>
+				</select>
+
+				<br><br>
+
+				<div class="input_phy_gro" id="Leuchtkraft" style="display: none;">
+					<label for="L">Eingabe Leuchtkraft [L_⨀]</label><br>
+					<input id="inputLeuchtkraft" type="number" step="any" name="L" value="">
+				</div>
+
+				<div class="input_phy_gro" id="Radius" style="display: none;">
+					<label for="R">Eingabe Radius [R_⨀]</label><br>
+					<input id="inputRadius" type="number" step="any" name="R" value="">
+				</div>
+
+				<div class="input_phy_gro" id="Oberfl" style="display: none;">
+					<label for="T_eff">Eingabe Oberflächentemperatur [T_eff_⨀]</label><br>
+					<input id="inputOberfl" type="number" step="any" name="T_eff" value="">
+				</div>
+
+				<div class="input_phy_gro" id="Masse">
+					<label for="M">Eingabe Masse [M_⨀]</label><br>
+					<input id="inputMasse" type="number" step="any" name="M" value="">
+				</div>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty8()'/></p>
+				<br>
+			</form>
+			<form  method="POST" action="index.php">
+				<h4>Leuchtkraft</h4>
+
+				<label for="R_Stern">Radius [m]</label><br>
+				<input id="R_Stern" type="number" step="any" name="R_Stern" value="">
+				<br><br>
+
+				<label for="Teff_Stern">Effektive Temperatur [K]</label><br>
+				<input id="Teff_Stern" type="number" step="any" name="Teff_Stern" value="">
+				<br>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty9()'/></p>
+				<br>
+			</form>
+			<form  method="POST" action="index.php">
+				<h4>Effektive Temperatur</h4>
+
+				<label for="L_Stern">Leuchtkraft (L) des Sterns [W]</label><br>
+				<input id="L_Stern" type="number" step="any" name="L_Stern" value="">
+				<br><br>
+
+				<label for="R2_Stern">Radius [m]</label><br>
+				<input id="R2_Stern" type="number" step="any" name="R2_Stern" value="">
+				<br>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty10()'/></p>
+				<br>
+			</form>
+			<div class="line"></div>
+			<form  method="POST" action="index.php">
+				<h3>Schwarzes Loch</h3>
+				<h4>Masse</h4>
+
+				<label for="a">Halbachse (a) der Umlaufbahn eines Körpers um das Schw. Loch [AE]</label><br>
+				<input id="a" type="number" step="any" name="a" value="">
+				<br><br>
+
+				<label for="tu">Umlaufzeit (t) [y]</label><br>
+				<input id="tu" type="number" step="any" name="tu" value="">
+				<br>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty11()'/></p>
+				<br>
+			</form>
+			<form  method="POST" action="index.php">
+				<h4>Schwarzschild-Radius</h4>
+
+				<label for="msr">Masse des Körpers [kg]</label><br>
+				<input id="msr" type="number" step="any" name="msr" value="">
+				<br>
+
+				<p><input type="submit" value="berechnen" onClick='return checkEmpty12()'/></p>
+				<br>
+			</form>
+			<div class="line"></div>
+			<form  method="POST" action="index.php">
+				<h3>Impressum</h3>
+				<h4>Autor: Mick Baldzer</h4><br>
+				<h4>Kontakt bei Fragen:</h4>
+				<p>E-Mail: mickbaldzer@outlook.com</p><br>
+				<h4>Quellen</h4>
+				<p>
+					BELL: "Der Lebenszyklus von Sternen" von Mick Baldzer<br>
+					<a href="pdf/Baldzer_Mick_Der Lebenszyklus von Sternen_BELL_ÜBERARBEITET.pdf">click here</a><br><br>
+
+					Bildquellen: <br>
+					(1) https://physicsforidiots.com/wp/wp-content/uploads/2014/07/Blackhole-SRadius.png <br>
+					(2) https://arxiv.org/pdf/1804.04898.pdf (S.5) <br>
+					(3) https://commons.wikimedia.org/wiki/File:Black_hole_lensing_web.gif <br>
+					(4) https://pbs.twimg.com/media/D3vIBCZX4AE8kb8.jpg 
+				</p>
+
+			</form>
+			<div class="line"></div>
+		</div>
+		<!--je nach Option soll das passende Eingabefeld erscheinen:-->
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#phy_gro").change(function(){
+					val = $("#phy_gro").val();
+					if(val == "p1"){
+						$(".input_phy_gro").css("display", "none");
+						$("#Masse").css("display", "block");
+					}else if(val == "p2"){
+						$(".input_phy_gro").css("display", "none");
+						$("#Leuchtkraft").css("display", "block");
+					}else if(val == "p3"){
+						$(".input_phy_gro").css("display", "none");
+						$("#Radius").css("display", "block");
+					}else if(val == "p4"){
+						$(".input_phy_gro").css("display", "none");
+						$("#Oberfl").css("display", "block");
+					}
+				});
+			});
+
+			function checkEmpty(){
+				if($("#rho").val() == "" || $("#T").val() == ""){
+					alert("Bitte geben Sie Dichte und Temperatur der Molekülwolke ein.");
+					return false;
+				}
+				return true;
+			}
+
+			function checkEmpty2(){
+				if($("#rho2").val() == ""){
+					alert("Bitte geben Sie eine Dichte der Molekülwolke ein.");
+					return false;
+				}
+				return true;
+			}
+
+			function checkEmpty3(){
+				if($("#Ms").val() == "" || $("#Rs").val() == "" || $("#Ts").val() == ""){
+					alert("Bitte geben Sie die Masse, den Radius und Temperatur des Protosterns ein.");
+					return false;
+				}
+				return true;
+			}
+
+			function checkEmpty7(){
+				if($("#Mp2").val() == "" || $("#Lp").val() == "" || $("#Rp2").val() == ""){
+					alert("Bitte geben Sie die Masse, Leuchtkraft und den Radius des Protosterns ein.");
+					return false;
+				}
+				return true;
+			}
+
+			function checkEmpty8(){
+				if($("#phy_gro").val() == "p1" && $("#inputMasse").val() == ""){
+					alert("Bitte geben Sie eine Masse ein!");
+					return false;
+				}
+				else if($("#phy_gro").val() == "p2" && $("#inputLeuchtkraft").val() == ""){
+					alert("Bitte geben Sie eine Leuchtkraft ein!");
+					return false;
+				}
+				else if($("#phy_gro").val() == "p3" && $("#inputRadius").val() == ""){
+					alert("Bitte geben Sie einen Radius ein!");
+					return false;
+				}
+				else if($("#phy_gro").val() == "p4" && $("#inputOberfl").val() == ""){
+					alert("Bitte geben Sie eine Oberflächentemperatur ein!");
+					return false;
+				}
+				return true;
+			}
+
+			function checkEmpty9(){
+				if($("#R_Stern").val() == "" || $("#Teff_Stern").val() == ""){
+					alert("Bitte geben Sie den Rasius und die effektive Temperatur des Sterns ein.");
+					return false;
+				}
+				return true;
+			}
+
+			function checkEmpty10(){
+				if($("#L_Stern").val() == "" || $("#R2_Stern").val() == ""){
+					alert("Bitte geben Sie den Rasius und die Leuchtkraft des Sterns ein.");
+					return false;
+				}
+				return true;
+			}
+
+			function checkEmpty11(){
+				if($("#a").val() == "" || $("#tu").val() == ""){
+					alert("Bitte geben Sie die Halbachse und die Umlaufzeit eines Körpers, der um das Schw. Loch kreist, ein.");
+					return false;
+				}
+				return true;
+			}
+
+			function checkEmpty12(){
+				if($("#msr").val() == ""){
+					alert("Bitte geben Sie die Masse des Körpers ein, der zum Schw. Loch wird.");
+					return false;
+				}
+				return true;
+			}
+		</script>
+	</body>
+</html>
